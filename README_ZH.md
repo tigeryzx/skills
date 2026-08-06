@@ -22,49 +22,64 @@
 
 [订阅 Newsletter](https://www.aihero.dev/s/skills-newsletter)
 
-## 快速开始（30 秒安装）
+## 安装（30 秒安装）
 
-1. 运行 skills.sh 安装器：
+两条路，两种理念。**[Claude Code 插件](https://code.claude.com/docs/en/plugins)** 将整套技能安装为托管、只读的包，当我发布新版本时它会自动更新 — 你订阅而非 fork。**[skills.sh](https://skills.sh/mattpocock/skills)** 将可编辑的技能文件复制到你的项目中，你可以随意修改它们，让它们成为你自己的。选择其中一种 — 两者都安装会让你每个技能出现两份。
+
+### 1. 获取 skills
+
+<details>
+<summary><strong>Claude Code</strong></summary>
+
+```bash
+claude plugins install mattpocock-skills
+```
+
+或者，在会话内：
+
+```
+/plugin install mattpocock-skills
+```
+
+它位于 Claude Code 的官方 marketplace 中，无需事先添加任何东西，更新会自动送达。
+
+</details>
+
+<details>
+<summary><strong>Codex 及其他 agent</strong></summary>
 
 ```bash
 npx skills@latest add mattpocock/skills
 ```
 
-2. 选择你想要的 skills，以及你想将它们安装到哪些 coding agent 上。**确保选择 `/setup-matt-pocock-skills`**。
+选择你想要的 skills，以及你想将它们安装到哪些 coding agent 上。**安装器会让你选择要安装哪些 skills — 确保 `setup-matt-pocock-skills` 是其中之一。**
 
-3. 在你的 agent 中运行 `/setup-matt-pocock-skills`。它会：
-   - 询问你想使用哪个 issue 追踪器（GitHub、Linear 或本地文件）
-   - 询问你在分类 issue 时使用什么标签（`/triage` 使用标签）
-   - 询问你想把创建的文档保存在哪里
+原生 Codex 插件已在路线图上 — 参见 [`.agents/adr/0002-ship-as-a-claude-code-plugin.md`](./.agents/adr/0002-ship-as-a-claude-code-plugin.md)。
 
-4. 好了 — 准备开始。
+</details>
 
-## 作为 Claude Code 插件安装
+<details>
+<summary><strong>动手党（tinkerers）</strong></summary>
 
-更喜欢即插即用、无需手动维护的安装方式？这些 skills 也以原生 [Claude Code 插件](https://code.claude.com/docs/en/plugins) 形式提供。插件将整个技能集作为托管包安装，当我发布新版本时它会自动更新 — 你订阅而非 fork。
-
-在 Claude Code 中：
-
-```
-/plugin marketplace add mattpocock/skills
-/plugin install mattpocock-skills@mattpocock
-```
-
-或者从终端：
+在任意 agent 上使用同一个安装器 — 包括 Claude Code：
 
 ```bash
-claude plugin marketplace add mattpocock/skills
-claude plugin install mattpocock-skills@mattpocock
+npx skills@latest add mattpocock/skills
 ```
 
-然后在每个仓库中运行一次 `/setup-matt-pocock-skills`，与上面的快速开始完全相同。
+它会将 skills 作为普通文件写入你的仓库，这些文件归你所有、可自由编辑。没有任何东西会在背后自动更新；想要我的最新改动时，用 `npx skills update` 拉取即可。
 
-两种安装方式，两种理念：
+</details>
 
-- **[skills.sh](https://skills.sh/mattpocock/skills)** 将 skills 复制到你的项目中，以便你可以修改它们，让它们成为你自己的。
-- **插件** 将它们作为只读、始终最新的包来维护 — 最适合你只想使用我的技能集并跟随它演进的场景。
+### 2. 运行 `/setup-matt-pocock-skills`
 
-> 使用 Codex 或其他 agent？[skills.sh 安装器](https://skills.sh/mattpocock/skills) 已经可以将这些 skills 安装到 Codex 和其他 Agent-Skills 标准的 harness 中。原生 Codex 插件已在路线图上 — 参见 [`.agents/adr/0002-ship-as-a-claude-code-plugin.md`](./.agents/adr/0002-ship-as-a-claude-code-plugin.md)。
+在你的 agent 中，每个仓库运行一次。它会：
+
+- 询问你想使用哪个 issue 追踪器（GitHub、Linear 或本地文件）
+- 询问你在分类 issue 时使用什么标签（`/triage` 使用标签）
+- 询问你想把创建的文档保存在哪里
+
+### 3. 好了 — 准备开始。
 
 ## 为什么要有这些 Skills
 
@@ -140,7 +155,7 @@ claude plugin install mattpocock-skills@mattpocock
 
 我构建了一个 **[`/tdd`](./skills/engineering/tdd/SKILL.md) skill**，你可以将其插入任何项目。它鼓励红-绿-重构，并为 agent 提供关于什么构成好测试和坏测试的充分指导。
 
-对于调试，我还构建了一个 **[`/diagnosing-bugs`](./skills/engineering/diagnosing-bugs/SKILL.md)** skill，它将最佳调试实践包装成一个简单的循环。
+对于调试，我还构建了一个 **[`/diagnosing-bugs`](./skills/engineering/diagnosing-bugs/SKILL.md)** skill，它将最佳调试实践包装成一个有纪律的循环，按阶段逐步推进。
 
 ### #4：我们构建了一个大泥球
 
@@ -160,7 +175,7 @@ claude plugin install mattpocock-skills@mattpocock
 
 - [`/to-spec`](./skills/engineering/to-spec/SKILL.md) 在创建 spec 之前询问你正在触及哪些模块
 
-而关键的 [`/improve-codebase-architecture`](./skills/engineering/improve-codebase-architecture/SKILL.md) 帮助你拯救已经变成大泥球的代码库。我建议每几天在你的代码库上运行一次。
+而关键的 [`/improve-codebase-architecture`](./skills/engineering/improve-codebase-architecture/SKILL.md) 会调查代码库中可深化的机会，并把候选交给你。我建议每几天在你的代码库上运行一次。它是调查而非救援：在一个真正老旧的代码库上，它会找到真实的候选机会，但不会替你把泥球解开。
 
 ### 总结
 
@@ -188,14 +203,15 @@ claude plugin install mattpocock-skills@mattpocock
 
 **Model-invoked（模型调用）**
 
-- **[prototype](./skills/engineering/prototype/SKILL.md)** — 构建一次性原型来回答设计问题 — 对于状态/逻辑问题创建一个可运行的终端应用，或从单个路由可切换的多个截然不同的 UI 变体。
-- **[diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md)** — 针对硬 bug 和性能回归的有纪律的诊断循环：复现 → 最小化 → 假设 → 检测 → 修复 → 回归测试。
+- **[prototype](./skills/engineering/prototype/SKILL.md)** — 构建一次性原型来回答设计问题 — 对于状态/逻辑问题创建单个可共享的 HTML 文件，或从单个路由可切换的多个截然不同的 UI 变体。
+- **[diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md)** — 针对硬 bug 和性能回归的有纪律的诊断循环：构建一个针对此 bug 变红的反馈循环 → 最小化 → 假设 → 检测 → 修复 → 回归测试。
 - **[research](./skills/engineering/research/SKILL.md)** — 针对高可信度主要来源调查问题，将结果作为带引用的 Markdown 文件捕获到仓库中，以后台 agent 运行。
 - **[tdd](./skills/engineering/tdd/SKILL.md)** — 采用红-绿-重构循环的测试驱动开发。一次一个垂直切片地构建特性或修复 bug。
 - **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)** — 主动构建和打磨项目的领域模型 — 对照词汇表质疑术语，用边缘场景案例进行压力测试，并内联更新 `CONTEXT.md` 和 ADR。
 - **[codebase-design](./skills/engineering/codebase-design/SKILL.md)** — 深度模块设计的共享规范和词汇：大量行为通过小型接口暴露，放置在干净的接缝处，通过该接口可测试。
-- **[code-review](./skills/engineering/code-review/SKILL.md)** — 对自某个固定点以来的差异进行双轴审查：**标准（Standards）**（是否遵循仓库的编码标准，加上 Fowler 代码坏味基线？）和 **Spec**（是否忠实实现了原始 issue/PRD？），以并行子代理运行，互不污染。
+- **[code-review](./skills/engineering/code-review/SKILL.md)** — 对自某个固定点以来的差异进行双轴审查：**标准（Standards）**（是否遵循仓库的编码标准，加上 Fowler 代码坏味基线？）和 **Spec**（是否忠实实现了原始 issue/spec？），以并行子代理运行，互不污染。
 - **[resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md)** — 逐块处理正在进行的 git merge 或 rebase 冲突，通过追溯到每一侧的主要来源来按意图解决，然后完成操作 — 绝不 `--abort`。
+- **[wizard](./skills/engineering/wizard/SKILL.md)** — 生成一个交互式 bash 向导，引导人类完成只有他们才能执行的步骤：配置基础设施、设置凭据或 CI 密钥、浏览陌生的第三方仪表盘、或运行一次性迁移/切换。
 
 ### Productivity
 
@@ -203,14 +219,16 @@ claude plugin install mattpocock-skills@mattpocock
 
 **User-invoked（用户调用）**
 
-- **[grill-me](./skills/productivity/grill-me/SKILL.md)** — 针对计划或设计被穷追不舍地盘问，直到决策树的每个分支都被解决。
+- **[grill-me](./skills/productivity/grill-me/SKILL.md)** — 针对计划或设计被穷追不舍地盘问，直到设计树的每个分支都被解决。
 - **[handoff](./skills/productivity/handoff/SKILL.md)** — 将当前对话压缩成一份交接文档，以便另一个 agent 可以继续工作。
 - **[teach](./skills/productivity/teach/SKILL.md)** — 在多个会话中教授用户一项新技能或概念，将当前目录作为有状态的教学工作区。
-- **[writing-great-skills](./skills/productivity/writing-great-skills/SKILL.md)** — 编写和编辑优秀技能的参考资料：使 skill 可预测的词汇和原则。
+- **[to-questionnaire](./skills/productivity/to-questionnaire/SKILL.md)** — 将你无法独自回答的决策转化为一份 Markdown 问卷，交给唯一能回答的那个人 — 可异步填写，或在会议中一起完成。它盘问的是「发送对象」（问卷给谁、你需要得到什么反馈），而不是主题本身。
+- **[wait-what](./skills/productivity/wait-what/SKILL.md)** — 当一条消息没有传达清楚时立刻触发。agent 会使用你的 `CONTEXT.md` 词汇，用通俗易懂的语言，附上你缺失的上下文重新阐释它。
 
 **Model-invoked（模型调用）**
 
-- **[grilling](./skills/productivity/grilling/SKILL.md)** — 对计划、决定或想法穷追不舍地盘问用户，直到决策树的每个分支都被解决。`grill-me` 和 `grill-with-docs` 背后复用的循环。
+- **[grilling](./skills/productivity/grilling/SKILL.md)** — 对计划、决定或想法穷追不舍地盘问用户，直到设计树的每个分支都被解决。`grill-me`、`grill-with-docs`、`triage`、`wayfinder` 和 `improve-codebase-architecture` 背后的可复用访谈原语。
+- **[writing-for-agents](./skills/productivity/writing-for-agents/SKILL.md)** — 为 agent 撰写文档：skills、AGENTS.md/CLAUDE.md，以及任何 agent 通过指针触达的文档。
 
 ---
 
@@ -225,8 +243,8 @@ claude plugin install mattpocock-skills@mattpocock
 - **中文**: 当你面对多个技能或工作流不确定该用哪个时，ask-matt 会分析你当前的场景和需求，推荐最适合的技能。它相当于本仓库所有技能的智能路由入口，帮助你从繁杂的工具集中快速定位到正确的工具。
 
 #### code-review
-- **英文**: Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes — Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/PRD asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to "review since X".
-- **中文**: 对代码变更进行双维度并行审查：「标准合规」维度检查代码是否遵循仓库记录的编码标准（包括 Fowler 代码坏味基线）；「功能规格」维度检查代码是否忠实实现了原始 issue 或 PRD 的要求。两个维度的审查由并行子代理独立运行，避免相互污染上下文，最终并排呈现审查结果。适用于审查分支、PR、进行中的改动，或要求"审查自某个时间点以来的变更"。
+- **英文**: Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes — Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/spec asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to "review since X".
+- **中文**: 对代码变更进行双维度并行审查：「标准合规」维度检查代码是否遵循仓库记录的编码标准（包括 Fowler 代码坏味基线）；「功能规格」维度检查代码是否忠实实现了原始 issue/spec 的要求。两个维度的审查由并行子代理独立运行，避免相互污染上下文，最终并排呈现审查结果。适用于审查分支、PR、进行中的改动，或要求"审查自某个时间点以来的变更"。
 
 #### codebase-design
 - **英文**: Shared vocabulary for designing deep modules. Use when the user wants to design or improve a module's interface, find deepening opportunities, decide where a seam goes, make code more testable or AI-navigable, or when another skill needs the deep-module vocabulary.
@@ -234,7 +252,7 @@ claude plugin install mattpocock-skills@mattpocock
 
 #### diagnosing-bugs
 - **英文**: Diagnosis loop for hard bugs and performance regressions. Use when the user says "diagnose"/"debug this", or reports something broken/throwing/failing/slow.
-- **中文**: 针对棘手 bug 和性能回退的规范化诊断循环。当用户说"诊断"/"调试一下"，或报告某些功能损坏、抛出异常、运行失败、响应缓慢时使用。遵循复现 → 最小化 → 假设 → 检测 → 修复 → 回归测试的严谨流程。
+- **中文**: 针对棘手 bug 和性能回退的规范化诊断循环。当用户说"诊断"/"调试一下"，或报告某些功能损坏、抛出异常、运行失败、响应缓慢时使用。遵循构建一个针对此 bug 变红的反馈循环 → 最小化 → 假设 → 检测 → 修复 → 回归测试的严谨流程。
 
 #### domain-modeling
 - **英文**: Build and sharpen a project's domain model. Use when the user wants to pin down domain terminology or a ubiquitous language, record an architectural decision, or when another skill needs to maintain the domain model.
@@ -254,7 +272,7 @@ claude plugin install mattpocock-skills@mattpocock
 
 #### prototype
 - **英文**: Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like.
-- **中文**: 构建一次性原型来回答特定的设计问题。当你需要验证状态模型或逻辑是否合理、探索 UI 应该长什么样时使用。对于状态/逻辑问题创建可运行的终端应用，对于 UI 问题创建可切换的多个变体。
+- **中文**: 构建一次性原型来回答特定的设计问题。当你需要验证状态模型或逻辑是否合理、探索 UI 应该长什么样时使用。对于状态/逻辑问题创建单个可共享的 HTML 文件，对于 UI 问题创建可切换的多个变体。
 
 #### research
 - **英文**: Investigate a question against high-trust primary sources and capture the findings as a Markdown file in the repo. Use when the user wants a topic researched, docs or API facts gathered, or reading legwork delegated to a background agent.
@@ -288,15 +306,19 @@ claude plugin install mattpocock-skills@mattpocock
 - **英文**: Plan a huge chunk of work — more than one agent session can hold — as a shared map of decision tickets on your issue tracker, and resolve them one at a time until the way to the destination is clear.
 - **中文**: 规划超大规模的工作（超过单个 agent 会话的处理能力），以 issue 追踪器上的决策 tickets 共享地图形式呈现。逐一解决这些 tickets，直到通往目的地的道路完全清晰。
 
+#### wizard
+- **英文**: Generate an interactive bash wizard that walks a human through steps only they can perform — provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover.
+- **中文**: 生成交互式 bash 向导脚本，引导人工完成只有他们才能执行的步骤 — 配置基础设施、设置凭据或 CI 密钥、浏览陌生的第三方仪表盘、或运行一次性迁移/切换。可以自动打开 URL、捕获用户输入值、确认每一步、并写入 .env 文件和 GitHub Actions secrets。
+
 ### 📁 productivity
 
 #### grill-me
 - **英文**: A relentless interview to sharpen a plan or design.
-- **中文**: 针对你的计划或设计进行穷追不舍地盘问，直到决策树的每个分支都被彻底解决。适用于非编码场景，帮助你在动手之前想清楚每一个细节，是最受欢迎的 skills 之一。
+- **中文**: 针对你的计划或设计进行穷追不舍地盘问，直到设计树的每个分支都被彻底解决。适用于非编码场景，帮助你在动手之前想清楚每一个细节，是最受欢迎的 skills 之一。
 
 #### grilling
-- **英文**: Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases.
-- **中文**: 对计划、决定或想法进行穷追不舍地盘问。当用户想要压力测试自己的思路、或使用任何"盘问"类触发词时使用。这是 `grill-me` 和 `grill-with-docs` 背后复用的核心循环逻辑。
+- **英文**: Interview the user relentlessly about a plan, decision, or idea until every branch of the design tree is resolved. The reusable interview primitive behind grill-me, grill-with-docs, triage, wayfinder and improve-codebase-architecture.
+- **中文**: 对计划、决定或想法进行穷追不舍地盘问，直到设计树的每个分支都被解决。这是 `grill-me`、`grill-with-docs`、`triage`、`wayfinder` 和 `improve-codebase-architecture` 背后复用的可访谈原语。
 
 #### handoff
 - **英文**: Compact the current conversation into a handoff document for another agent to pick up.
@@ -306,9 +328,17 @@ claude plugin install mattpocock-skills@mattpocock
 - **英文**: Teach the user a new skill or concept, within this workspace.
 - **中文**: 在当前工作区内教授用户一项新技能或概念。支持多个会话的持续学习，使用教学工作区来跟踪学习进度、维护知识库和练习记录。
 
-#### writing-great-skills
-- **英文**: Reference for writing and editing skills well — the vocabulary and principles that make a skill predictable.
-- **中文**: 编写和编辑优秀技能的参考资料。定义了使 skill 可预测的词汇表和设计原则，帮助你创建行为一致、易于理解和维护的技能。
+#### to-questionnaire
+- **英文**: Turn a decision you can't answer alone into a Markdown questionnaire for the one person who can — filled in async, or together over a meeting. It grills you about the send (who it's for, what you need back), not the subject.
+- **中文**: 将你无法独自回答的决策转化为一份 Markdown 问卷，交给唯一能回答的那个人 — 可异步填写，或在会议中一起完成。它盘问的是「发送对象」（问卷给谁、你需要得到什么反馈），而不是主题本身。
+
+#### wait-what
+- **英文**: Fire this the moment a message doesn't land. The agent re-pitches it with the context you're missing, in plain English, using your CONTEXT.md vocabulary.
+- **中文**: 当一条消息没有传达清楚时立刻触发。agent 会使用你的 `CONTEXT.md` 词汇，用通俗易懂的语言，附上你缺失的上下文重新阐释它。
+
+#### writing-for-agents
+- **英文**: Writing documents for agents: skills, AGENTS.md/CLAUDE.md, and any doc an agent reaches by a pointer.
+- **中文**: 为 agent 撰写文档：skills、AGENTS.md/CLAUDE.md，以及任何 agent 通过指针触达的文档。
 
 ### 📁 misc
 
@@ -328,21 +358,7 @@ claude plugin install mattpocock-skills@mattpocock
 - **英文**: Set up Husky pre-commit hooks with lint-staged (Prettier), type checking, and tests in the current repo. Use when user wants to add pre-commit hooks, set up Husky, configure lint-staged, or add commit-time formatting/typechecking/testing.
 - **中文**: 在当前仓库中设置 Husky pre-commit hooks，包含 lint-staged（Prettier 格式化）、类型检查和测试。当用户想要添加 pre-commit 钩子、配置 Husky、设置 lint-staged、或在提交时自动格式化/类型检查/测试时使用。
 
-### 📁 personal
-
-#### edit-article
-- **英文**: Edit and improve articles by restructuring sections, improving clarity, and tightening prose. Use when user wants to edit, revise, or improve an article draft.
-- **中文**: 通过重组章节结构、提高清晰度和精简文笔来编辑和改进文章。适用于需要编辑、修订或改进文章草稿的场景。
-
-#### obsidian-vault
-- **英文**: Search, create, and manage notes in the Obsidian vault with wikilinks and index notes. Use when user wants to find, create, or organize notes in Obsidian.
-- **中文**: 在 Obsidian 笔记库中搜索、创建和管理笔记，支持 wiki 链接和索引笔记。适用于需要在 Obsidian 中查找、创建或组织笔记的场景。
-
 ### 📁 in-progress
-
-#### batch-grill-me
-- **英文**: A relentless interview that asks every frontier question at once, round by round.
-- **中文**: 一种改进的盘问方式，每轮同时提出所有前沿问题，而不是逐个提问。盘问效率更高，适合已经熟悉盘问流程的用户。
 
 #### claude-handoff
 - **英文**: Hand the current conversation off to a fresh background agent that picks up the work immediately.
@@ -356,14 +372,6 @@ claude plugin install mattpocock-skills@mattpocock
 - **英文**: Wire dependency-cruiser into a TypeScript repo so each package is a deep module — implementation hidden in subfolders, reachable only through its entry-point files. User-invoked.
 - **中文**: 在 TypeScript 仓库中配置 dependency-cruiser，使每个包成为一个深度模块 — 实现代码隐藏在子文件夹中，只能通过入口文件访问。帮助实施模块封装，降低耦合度。
 
-#### to-questionnaire
-- **英文**: Turn a decision you can't fully answer into a questionnaire for someone else to fill in.
-- **中文**: 将你无法完全回答的决策问题转化为一份问卷，交给其他人来填写。当你需要依赖他人（领域专家、产品经理等）提供信息来做出决策时使用。
-
-#### wizard
-- **英文**: Generate an interactive bash wizard that walks a human through a manual procedure — third-party setup, a one-off migration, an A→B state transition — opening URLs, capturing values, confirming each step, and writing .env files and GitHub Actions secrets.
-- **中文**: 生成交互式 bash 向导脚本，引导人工执行手动操作流程 — 第三方工具设置、一次性迁移、A→B 状态转换等。可以自动打开 URL、捕获用户输入值、确认每一步、并写入 .env 文件和 GitHub Actions secrets。
-
 #### writing-beats
 - **英文**: Writing, exploit — assemble raw material into a journey of beats, grounding each term before a beat leans on it.
 - **中文**: 写作的"利用"阶段 — 将原始素材组装成一段"节拍"旅程，在每个节拍使用术语之前先对其进行铺垫和解释。适合将零散内容组织成流畅的文章段落。
@@ -375,21 +383,3 @@ claude plugin install mattpocock-skills@mattpocock
 #### writing-shape
 - **英文**: Writing, exploit — shape raw material into an article, paragraph by paragraph.
 - **中文**: 写作的"利用"阶段 — 将原始素材逐段塑造成文章。适合将分类整理好的内容进一步打磨成完整的文章结构。
-
-### 📁 deprecated
-
-#### design-an-interface
-- **英文**: Generate multiple radically different interface designs for a module using parallel sub-agents. Use when user wants to design an API, explore interface options, compare module shapes, or mentions "design it twice".
-- **中文**: 使用并行子代理为模块生成多个截然不同的接口设计方案。当你需要设计 API、探索接口选项、比较模块形态或提到"设计两次"时使用。已被更新的设计方法取代。
-
-#### qa
-- **英文**: Interactive QA session where user reports bugs or issues conversationally, and the agent files GitHub issues. Explores the codebase in the background for context and domain language. Use when user wants to report bugs, do QA, file issues conversationally, or mentions "QA session".
-- **中文**: 交互式 QA 会话，用户以对话方式报告 bug 或问题，agent 自动在后台探索代码库获取上下文和领域语言，然后提交 GitHub issue。适用于以对话方式报告 bug、进行 QA 或提交 issue 的场景。
-
-#### request-refactor-plan
-- **英文**: Create a detailed refactor plan with tiny commits via user interview, then file it as a GitHub issue. Use when user wants to plan a refactor, create a refactoring RFC, or break a refactor into safe incremental steps.
-- **中文**: 通过用户访谈创建包含小步骤提交的详细重构计划，然后将其作为 GitHub issue 提交。适用于规划重构、创建重构 RFC、或将重构分解为安全的增量步骤。
-
-#### ubiquitous-language
-- **英文**: Extract a DDD-style ubiquitous language glossary from the current conversation, flagging ambiguities and proposing canonical terms. Saves to UBIQUITOUS_LANGUAGE.md. Use when user wants to define domain terms, build a glossary, harden terminology, create a ubiquitous language, or mentions "domain model" or "DDD".
-- **中文**: 从当前对话中提取 DDD 风格的统一语言词汇表，标记歧义并推荐规范术语，保存到 UBIQUITOUS_LANGUAGE.md。当用户想要定义领域术语、构建词汇表、强化术语体系、创建统一语言或提到"领域模型"或"DDD"时使用。
